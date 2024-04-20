@@ -1,6 +1,7 @@
 package com.sam.springbootdemo.controller;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sam.springbootdemo.model.User;
@@ -33,8 +35,8 @@ public class HelloWorldController {
 		return user;
 	}*/
 	
-	@GetMapping("/getUserDetail")
-	public ResponseEntity<User> getUserDetail(){
+	@GetMapping("/getUserDetails")
+	public ResponseEntity<User> getUserDetails(){
 		User user = new User();
 		user.setUsername("Ranjit");
 		user.setEmail("ranjitxyz@gmail.com");
@@ -42,8 +44,9 @@ public class HelloWorldController {
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 	
-	@GetMapping("/getUserDetailsById/{id}")
-	public ResponseEntity<User> getUserDetailsById( 
+	/*Use of @PathVariable*/
+	@GetMapping("/getUserDetailsByPathVariable/{id}")
+	public ResponseEntity<User> getUserDetailsByPathVariable( 
 			                                @PathVariable("id") String userId){
 		User user = new User();
 		user.setUsername("Ranjit");
@@ -52,4 +55,20 @@ public class HelloWorldController {
 		user.setUserId(userId);
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
+	
+   /* Use of @RequestParam*/
+	@GetMapping("/getuserDeatilsByRequestParam")
+	public ResponseEntity<User> getuserDeatilsByRequestParam(HttpServletRequest request, 
+			 @RequestParam("name")String userName ,
+			 @RequestParam(name ="email",required=false, defaultValue="xyz@gmail.com") String emailId){
+		
+		User user = new User();
+		user.setUsername(userName);
+		user.setEmail(emailId);
+		user.setAge(30);
+		
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+	}
+	
+	
 }
