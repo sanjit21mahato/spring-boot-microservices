@@ -4,6 +4,8 @@ import com.sam.orderservice.model.Order;
 
 public interface IOrderService {
 
-	public Order placeOrder(Order order);
+	public long placeOrder(Order order);
+
+	public Order getOrderDetails(Long orderId);
 
 }

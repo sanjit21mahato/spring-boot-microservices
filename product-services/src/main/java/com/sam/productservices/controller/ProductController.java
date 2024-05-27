@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +46,14 @@ public class ProductController {
 		List<Product> productList = new ArrayList<>();
 		productList= productServices.getProducts();
 		return new ResponseEntity<List<Product>>(productList, HttpStatus.FOUND);
+		
+	}
+	
+	@PutMapping("/reducePoductQuantity/{productId}/{quantity}")
+	public ResponseEntity<Long> reducePoductQuantity(@PathVariable("productId") long productId,
+			@PathVariable("quantity") long quantity){
+		productId= productServices.reducePoductQuantity(productId, quantity);
+		return new ResponseEntity<Long>(productId, HttpStatus.OK);
 		
 	}
 	

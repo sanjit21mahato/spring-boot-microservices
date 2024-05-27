@@ -11,8 +11,8 @@ import com.sam.productservices.model.ProductErrorResponse;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
-	@ExceptionHandler(ProductServiceCustomeException.class)
-	public ResponseEntity<ProductErrorResponse> handleException(ProductServiceCustomeException exception){
+	@ExceptionHandler(ProductServiceCustomException.class)
+	public ResponseEntity<ProductErrorResponse> handleException(ProductServiceCustomException exception){
 		ProductErrorResponse productErrorResponse = ProductErrorResponse.builder()
 				.errorMessage(exception.getMessage())
 				.status(HttpStatus.NOT_FOUND)

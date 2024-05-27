@@ -1,5 +1,7 @@
 package com.sam.orderservice.entity;
 
+import java.time.Instant;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,14 +18,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="order")
+@Table(name="ORDER_DETAILS")
 public class OrderEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long orderId;
-	private float price;
+	private long amount;
 	private long productId;
-	private String status;
+	private String orderStatus;
+	private long quantity;
+	private Instant orderDate;
+	private String paymentMode;
 	
 }

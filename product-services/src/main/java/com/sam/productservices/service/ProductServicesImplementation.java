@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sam.productservices.entity.ProductEntity;
-import com.sam.productservices.exception.ProductServiceCustomeException;
+import com.sam.productservices.exception.ProductServiceCustomException;
 import com.sam.productservices.model.Product;
 import com.sam.productservices.repository.IProductRepository;
 
@@ -42,7 +42,7 @@ public class ProductServicesImplementation implements IProductServices{
 		log.info("inside get productById()");
 		Product product = new Product();
 		ProductEntity productEntity = productRepository.findById(productId).
-				 orElseThrow(()->new ProductServiceCustomeException("Product is not found for the id:"+productId , "PRODUCT_NOT_FOUND"));
+				 orElseThrow(()->new ProductServiceCustomException("Product is not found for the id:"+productId , "PRODUCT_NOT_FOUND"));
 		
 		BeanUtils.copyProperties(productEntity, product);
 		return product;
@@ -60,5 +60,26 @@ public class ProductServicesImplementation implements IProductServices{
 		}).collect(Collectors.toList());
 	
 		return productList;
+	}
+	
+	@Override
+	public long reducePoductQuantity(long productId, long quantity) {
+
+		log.info("Reduce Qunatity of Product Id: {} by {} ", productId, quantity);
+		ProductEntity productEntity = productRepository.findById(productId)
+				.orElseThrow(() -> new ProductServiceCustomException("Product is not found for the id:" + productId,
+						"PRODUCT_NOT_FOUND"));
+
+		long currentQuantity = productEntity.getQuantity();
+		if (currentQuantity < quantity) {
+			throw new ProductServiceCustomException("Product does not have sufficient quantity",
+					"INSUFFICIENT_QUANTITY");
+		}
+		long reducedQuantity = currentQuantity - quantity;
+		productEntity.setQuantity(reducedQuantity);
+
+		productRepository.save(productEntity);
+		log.info("Reduce Qunatity of Product is successful");
+		return productEntity.getProductId();
 	}
 }
